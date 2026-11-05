@@ -1,0 +1,11 @@
+{
+  "name": "sports-commentary-club",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

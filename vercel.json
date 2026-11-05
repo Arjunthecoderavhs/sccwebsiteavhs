@@ -1,0 +1,10 @@
+{
+  "outputDirectory": "public",
+  "functions": { "api/*.js": { "maxDuration": 60 } },
+  "headers": [
+    { "source": "/(.*)", "headers": [
+      { "key": "Permissions-Policy", "value": "microphone=(self)" },
+      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+    ] }
+  ]
+}
