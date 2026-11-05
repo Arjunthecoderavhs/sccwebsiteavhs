@@ -3,8 +3,10 @@
 import { send, readJson, clientIp, rateLimited } from "./_lib.js";
 import { buildRequest } from "./_prompts.js";
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-flash-latest";
 const BASE = process.env.GEMINI_BASE_URL || "https://generativelanguage.googleapis.com/v1beta";
+// Tried in order: if one model is busy, missing or not allowed on the free tier, the next one is used.
+const MODELS = [process.env.GEMINI_MODEL, "gemini-flash-latest", "gemini-2.5-flash", "gemini-flash-lite-latest", "gemini-2.5-flash-lite"]
+  .filter((m, i, a) => m && a.indexOf(m) === i);
 
 function extractJson(text) {
   const cleaned = text.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "").trim();
@@ -18,38 +20,55 @@ function extractJson(text) {
 }
 
 function httpError(status, message) { return Object.assign(new Error(message), { status }); }
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function callGemini(req) {
+async function callModel(model, req) {
   const body = {
     systemInstruction: { parts: [{ text: req.system }] },
     contents: req.messages.map((m) => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })),
-    generationConfig: { responseMimeType: "application/json", maxOutputTokens: Math.max(req.maxTokens, 4000), temperature: 0.9 },
+    generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192, temperature: 0.9 },
   };
-  const r = await fetch(`${BASE}/models/${encodeURIComponent(MODEL)}:generateContent`, {
+  const r = await fetch(`${BASE}/models/${encodeURIComponent(model)}:generateContent`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY },
+    headers: { "Content-Type": "application/json", "x-goog-api-key": (process.env.GEMINI_API_KEY || "").trim() },
     body: JSON.stringify(body),
   });
   const data = await r.json().catch(() => ({}));
-  if (!r.ok) {
-    const msg = data?.error?.message || "";
-    console.error("[ai] gemini", r.status, msg);
-    if (r.status === 429) throw httpError(429, "The free AI limit was reached for now. Wait a minute (or try again tomorrow if it keeps happening).");
-    if (r.status === 400 && /api key/i.test(msg)) throw httpError(401, "The AI key on the server is invalid. Tell a club officer.");
-    if (r.status === 403) throw httpError(401, "The AI key on the server isn't allowed to use Gemini. Tell a club officer.");
-    if (r.status === 404) throw httpError(500, "The AI model name is wrong. Tell a club officer to check GEMINI_MODEL.");
-    throw httpError(502, "The AI couldn't finish that request. Please try again.");
+  return { ok: r.ok, status: r.status, data, message: data?.error?.message || "" };
+}
+
+async function callGemini(req) {
+  let last = null;
+  for (const model of MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const res = await callModel(model, req);
+      if (res.ok) {
+        const d = res.data;
+        if (d?.promptFeedback?.blockReason) throw httpError(422, "The AI declined this request. Try rephrasing your answer.");
+        const cand = d?.candidates?.[0];
+        if (cand?.finishReason === "SAFETY") throw httpError(422, "The AI declined this request. Try rephrasing your answer.");
+        const text = (cand?.content?.parts || []).filter((p) => !p.thought).map((p) => p.text || "").join("");
+        if (text.trim()) return text;
+        last = { status: 502, message: `empty answer (${cand?.finishReason || "no reason"})` };
+        break; // try the next model
+      }
+      last = res;
+      console.error("[ai] gemini", model, res.status, res.message);
+      // a bad or blocked key won't work on any model: stop right away
+      if (res.status === 400 && /api key/i.test(res.message)) throw httpError(401, "The Gemini key is invalid. In Vercel, check GEMINI_API_KEY has no extra spaces, then Redeploy.");
+      if (res.status === 403) throw httpError(401, "Google blocked this Gemini key: " + res.message.slice(0, 160));
+      if (res.status === 503 || res.status === 500) { await sleep(800); continue; } // busy: retry once, then next model
+      break; // 404 model not found, 429 limit, 400 other: try next model
+    }
   }
-  if (data?.promptFeedback?.blockReason) throw httpError(422, "The AI declined this request. Try rephrasing your answer.");
-  const cand = data?.candidates?.[0];
-  if (cand?.finishReason === "SAFETY") throw httpError(422, "The AI declined this request. Try rephrasing your answer.");
-  return (cand?.content?.parts || []).map((p) => p.text || "").join("");
+  if (last?.status === 429) throw httpError(429, "The free AI limit was reached for now. Wait a minute (or try again tomorrow if it keeps happening).");
+  throw httpError(502, `The AI couldn't finish that request (Google said: ${String(last?.message || "error " + last?.status).slice(0, 180)})`);
 }
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return send(res, 405, { error: "Use POST" });
   if (!process.env.GEMINI_API_KEY) {
-    return send(res, 503, { error: "AI is not set up yet: the site owner needs to add GEMINI_API_KEY in the Vercel settings." });
+    return send(res, 503, { error: "AI is not set up yet: the site owner needs to add GEMINI_API_KEY in the Vercel settings, then Redeploy." });
   }
   if (rateLimited("ai:" + clientIp(req), 60)) {
     return send(res, 429, { error: "You've hit the practice limit for now. Take a 10-minute break and try again." });
@@ -73,7 +92,7 @@ export default async function handler(req, res) {
     return send(res, 200, { result: json });
   } catch (err) {
     const status = err.status || 500;
-    if (!err.status) console.error("[ai]", body.task, err);
-    return send(res, status, { error: err.status ? err.message : "The AI couldn't finish that request. Please try again." });
+    console.error("[ai]", body.task, status, err.message);
+    return send(res, status, { error: err.status ? err.message : "The AI couldn't finish that request (" + String(err.message).slice(0, 120) + ")" });
   }
 }
