@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sports Commentary Club · AVHS</title>
+<meta name="description" content="Amador Valley High School's Sports Commentary Club: practice play-by-play, record podcasts, pitch in-game marketing, run a front office, and quiz your broadcasting instincts.">
+<meta name="theme-color" content="#0b0b0c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd200'/%3E%3Crect x='12' y='6' width='8' height='14' rx='4' fill='%230b0b0c'/%3E%3Cpath d='M9 16a7 7 0 0 0 14 0M16 23v4M12 27h8' stroke='%230b0b0c' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#about" aria-label="Sports Commentary Club home">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0c" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="#0b0b0c"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg></span>
+      <span class="brand-text">Sports Commentary Club<small>Amador Valley High School</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#commentary">Commentary</a>
+      <a href="#podcast">Podcast</a>
+      <a href="#promote">Promote</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#management">Management</a>
+      <a href="#members">Members</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ======================= 1. ABOUT US ======================= -->
+<section id="about" data-page>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <span class="onair"><i></i>On air · Fridays at lunch · Room H-9</span>
+        <h1>Find your <em>voice</em> in sports.</h1>
+        <p>The Sports Commentary Club is where Amador Valley students analyze games, practice live play-by-play, debate sports hot takes, and learn the business side of the industry. It runs as a discussion-first lab. There are no lectures.</p>
+        <div class="row" style="margin-top:22px">
+          <a class="btn primary" href="https://forms.gle/YDAS8Aj7DrMF1w1k8" target="_blank" rel="noopener">Join the mailing list</a>
+          <a class="btn ghost" href="#commentary">Try a practice call</a>
+        </div>
+      </div>
+      <div class="hero-card" aria-label="Club info scoreboard">
+        <div class="scorebug">
+          <div class="t home"><span>SCC</span><span>AVHS</span></div>
+          <div class="clock" id="heroClock">FRI 12:00</div>
+          <div class="t away"><span>H-9</span><span>LUNCH</span></div>
+        </div>
+        <div class="body">
+          <div class="stat">Meetings <b>Every Friday, lunch</b></div>
+          <div class="stat">Location <b>Room H-9*</b></div>
+          <div class="stat">Google Classroom <b>ao7yexzb</b></div>
+          <div class="stat">Advisors <b>George Kramer &amp; Bryan Alamillo</b></div>
+          <div class="stat" style="border:0;padding:0">Open to <b>All AVHS students</b></div>
+          <span class="note" style="color:#8f8f8f">*Schedule may change. Check Google Classroom.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap segment">
+    <div class="lower-third"><span class="tag">About us</span><div class="title"><h2>What is the SCC?</h2></div></div>
+    <p class="lead">The Sports Commentary Club (SCC) is an academic and media-focused student organization at Amador Valley High School. It builds real skills in public speaking, real-time critical analysis, and sports journalism. It is run by students, with President Arjun Prabhu and Vice President Will Bridenbaugh, and advised by George Kramer and Bryan Alamillo. The club is modeled on professional sports broadcasting networks and college communications programs.</p>
+
+    <div class="grid cols-3" style="margin-top:28px">
+      <div class="pillar"><span class="num">Mic</span><h3>Live Commentary Practice</h3><p>Call live games and iconic highlights. Get real-time feedback on your delivery, pacing and energy.</p></div>
+      <div class="pillar"><span class="num">Desk</span><h3>Sports Debates &amp; Analytics</h3><p>Discuss hot topics, team strategies, trade deadlines and in-depth player statistics in student-led roundtables.</p></div>
+      <div class="pillar"><span class="num">Talk</span><h3>Sports Talks</h3><p>Short slots in every meeting to talk sports: personal, local, or professional.</p></div>
+    </div>
+
+    <div class="split" style="margin-top:48px">
+      <div class="panel">
+        <h4>The monthly rotation</h4>
+        <h3>How a month of meetings runs</h3>
+        <div class="week"><div class="w">Wk 1</div><div><b>Live Panel Roundtables</b><br><span class="note">Timed, multi-person analyst panels debating hot topics across pro sports, like trade deadlines, franchise decisions and player brand strategy.</span></div></div>
+        <div class="week"><div class="w">Wk 2</div><div><b>Play-by-Play &amp; Broadcast Simulations</b><br><span class="note">Workshops where you practice live game commentary, presentation pacing and post-game breakdowns using short game clips.</span></div></div>
+        <div class="week"><div class="w">Wk 3</div><div><b>Business &amp; Valuation Case Studies</b><br><span class="note">The corporate side of sports: shoe deals (Nike vs. Adidas NIL strategies), stadium financing and franchise operations.</span></div></div>
+        <div class="week"><div class="w">Wk 4</div><div><b>Guest Lectures &amp; Peer Feedback</b><br><span class="note">Bay Area media professionals, sports marketers and agents, followed by peer reviews of member broadcasts.</span></div></div>
+      </div>
+      <div class="grid">
+        <div class="panel dark">
+          <p class="quote">"When under high pressure or scrutiny, doing your job is the key."</p>
+          <cite>Mike Tirico, sports commentator</cite>
+        </div>
+        <div class="panel soft">
+          <h4>Our objectives</h4>
+          <ul class="list-clean">
+            <li><span>Run a weekly platform for analyzing pro sports management decisions, roster strategy and broadcast mechanics.</span></li>
+            <li><span>Stay fully compliant with AVHS ASB guidelines, with quarterly minutes and advisor oversight.</span></li>
+            <li><span>Field student teams at West Coast university sports-business summits and pitch invitationals.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px">
+      <div class="lower-third"><span class="tag">Guidelines</span><div class="title"><h2>Member expectations</h2></div></div>
+      <div class="grid cols-3">
+        <div class="panel soft"><h3>Active participation</h3><p>Engage in the discussions and play the games.</p></div>
+        <div class="panel soft"><h3>Respectful debates</h3><p>Strong sports opinions, delivered respectfully. Respect everyone's ideas and never put people down.</p></div>
+        <div class="panel soft"><h3>Listening skills</h3><p>Simply put: don't talk when others are speaking. Use active listening.</p></div>
+      </div>
+      <div class="callout warn" style="margin-top:16px"><b>Not OK:</b> name-calling during disagreements, being disruptive or rude, or leaving the classroom a mess. Repeated offenses have consequences. If you can't make a meeting, email the club ahead of time.</div>
+    </div>
+
+    <div style="margin-top:48px">
+      <div class="lower-third"><span class="tag">What's ahead</span><div class="title"><h2>Events &amp; activities</h2></div></div>
+      <div class="grid cols-4">
+        <div class="panel event"><span class="eyebrow">Event</span><h3 style="margin-top:8px">Highlight watch parties</h3><p class="note">Muted live-broadcast play-by-play sessions with discussion.</p></div>
+        <div class="panel event"><span class="eyebrow">Event</span><h3 style="margin-top:8px">Podcasts &amp; mock ESPN</h3><p class="note">Recorded podcast panels and hot-take discussions.</p></div>
+        <div class="panel event"><span class="eyebrow">Event</span><h3 style="margin-top:8px">Commentary roleplays</h3><p class="note">Submit clips with your own commentary. Possible prizes.</p></div>
+        <div class="panel event"><span class="eyebrow">Event</span><h3 style="margin-top:8px">Live sports trips</h3><p class="note">Experience live commentary in person. A Sharks game at SAP Center in San Jose is planned once ASB approves it. Carpooling encouraged.</p></div>
+      </div>
+      <div class="panel soft" style="margin-top:16px">
+        <div class="row" style="justify-content:space-between">
+          <div><h4>Fantasy basketball league</h4><p style="margin:0">Join the club fantasy basketball league to learn more about the game.</p></div>
+          <a class="btn" href="https://forms.gle/AKgLiW5cy1r23C12A" target="_blank" rel="noopener">Fantasy interest form</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px">
+      <div class="lower-third"><span class="tag">Get involved</span><div class="title"><h2>Ready to take the mic?</h2></div></div>
+      <div class="grid cols-4">
+        <a class="link-tile" href="https://forms.gle/kxgJ78mcoFRDBoVX6" target="_blank" rel="noopener"><b>Sign up</b><span>Club sign-up form (use your school email)</span></a>
+        <a class="link-tile" href="https://forms.gle/YDAS8Aj7DrMF1w1k8" target="_blank" rel="noopener"><b>Mailing list</b><span>Get meeting reminders and event news</span></a>
+        <a class="link-tile" href="https://docs.google.com/document/d/1SyCfGvPPlXTAGZsRdEf0nVrwdW6vvqApdL8qWWm6JFk/edit?tab=t.fqtyitbmkzia" target="_blank" rel="noopener"><b>Logistics doc</b><span>Constitution, rules, meeting structure</span></a>
+        <a class="link-tile" href="https://classroom.google.com/" target="_blank" rel="noopener"><b>Google Classroom</b><span>Join with code <strong>ao7yexzb</strong></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity sections are rendered by their modules -->
+<section id="commentary" data-page hidden></section>
+<section id="podcast" data-page hidden></section>
+<section id="promote" data-page hidden></section>
+<section id="quiz" data-page hidden></section>
+<section id="management" data-page hidden></section>
+<section id="members" data-page hidden></section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="row" style="justify-content:space-between;align-items:flex-end">
+      <div>
+        <span class="eyebrow" style="color:var(--yellow)">Contact us</span>
+        <h3 style="font-size:34px;margin-top:6px">Questions? Reach the booth.</h3>
+      </div>
+      <div class="copy-row">
+        <span class="note" style="color:#bdbdbd">Google Classroom code</span>
+        <span class="code-pill" id="classCode">ao7yexzb</span>
+        <button class="btn small copy-btn" data-copy="ao7yexzb">Copy</button>
+      </div>
+    </div>
+    <div class="grid cols-4">
+      <div class="contact-card"><span class="role">President</span><span class="name">Arjun Prabhu</span><span class="email">ap4956@pleasantonusd.net</span></div>
+      <div class="contact-card"><span class="role">Vice President</span><span class="name">Will Bridenbaugh</span><span class="email">wb6525@pleasantonusd.net</span></div>
+      <div class="contact-card"><span class="role">Teacher Advisor</span><span class="name">George Kramer</span><span class="email">gkramer@pleasantonusd.net</span></div>
+      <div class="contact-card"><span class="role">Teacher Advisor</span><span class="name">Bryan Alamillo</span><span class="email missing">Email coming soon</span></div>
+    </div>
+    <div class="row">
+      <a class="btn small copy-btn" href="https://docs.google.com/document/d/1SyCfGvPPlXTAGZsRdEf0nVrwdW6vvqApdL8qWWm6JFk/edit?tab=t.fqtyitbmkzia" target="_blank" rel="noopener">Logistics document</a>
+      <a class="btn small copy-btn" href="https://forms.gle/YDAS8Aj7DrMF1w1k8" target="_blank" rel="noopener">Mailing list</a>
+      <a class="btn small copy-btn" href="https://forms.gle/kxgJ78mcoFRDBoVX6" target="_blank" rel="noopener">Club sign-up</a>
+    </div>
+    <div class="fine">
+      <span>Sports Commentary Club · Amador Valley High School · Pleasanton, CA</span>
+      <span>Meetings every Friday at lunch in H-9 · AI feedback is a practice tool, not an official grade</span>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
